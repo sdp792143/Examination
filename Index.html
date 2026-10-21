@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNM Midwifery & Nursing Practice Examination</title>
+<style>
+:root{--navy:#16324f;--blue:#245b83;--light:#f3f6fa;--line:#dbe3ec;--green:#176b45}
+*{box-sizing:border-box}body{margin:0;background:var(--light);font-family:Arial,Helvetica,sans-serif;color:#17212b;line-height:1.5}
+header{background:linear-gradient(120deg,#16324f,#28658b);color:white;padding:30px 18px}
+.wrap{max-width:900px;margin:auto;padding:0 16px}
+h1{font-size:clamp(24px,4vw,34px);margin:0 0 8px}header p{margin:0;color:#e8f0f7}
+main{padding:24px 0 50px}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 14px #19324a0a}
+h2{font-size:21px;color:var(--navy);margin:0 0 14px}.sub{color:#536273;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+input,select{width:100%;padding:12px;border:1px solid #b9c7d5;border-radius:8px;font-size:15px;background:white}
+button{border:0;border-radius:9px;background:var(--blue);color:white;padding:12px 18px;font-size:15px;font-weight:700;cursor:pointer}
+button.secondary{background:#e7edf3;color:var(--navy)}button:disabled{opacity:.5;cursor:not-allowed}
+.notice{padding:12px 14px;border-left:4px solid #d49a20;background:#fff8e8;border-radius:6px}
+.q{padding:16px 0;border-bottom:1px solid var(--line)}.q:last-child{border-bottom:0}
+.qtitle{font-weight:700;margin-bottom:10px}.marks{float:right;font-size:12px;background:#eaf0f6;padding:3px 8px;border-radius:20px;color:#24445f}
+.option{display:flex;gap:9px;align-items:flex-start;padding:8px 10px;border:1px solid #e1e7ee;border-radius:8px;margin:7px 0;font-weight:400;cursor:pointer}
+.option input{width:auto;margin-top:4px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+#exam,#result{display:none}.score{font-size:34px;color:var(--green);font-weight:800}.correct{background:#e9f7ef;border-color:#8ac5a3}.wrong{background:#fff0ef;border-color:#e3a19b}
+footer{text-align:center;color:#607080;padding:20px;font-size:12px}
+@media print{header{background:#fff;color:#000}button{display:none}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Nursing Examination</h1><p>GNM Midwifery Nursing Category · Post Basic B.Sc. Nursing · ANM · GNM · Other</p></div></header>
+<main class="wrap">
+<section class="card" id="registration">
+<h2>Candidate Registration</h2>
+<p class="sub">Please complete your details before starting the practice examination. This standalone page does not transmit or save your details to an online server.</p>
+<div class="grid">
+<div><label for="name">Full Name *</label><input id="name" required placeholder="Enter your full name"></div>
+<div><label for="course">Course *</label><select id="course" required><option value="">Select course</option><option>Post Basic B.Sc. Nursing</option><option>ANM</option><option>GNM</option><option>Other</option></select></div>
+<div><label for="experience">Nursing Experience *</label><select id="experience" required><option value="">Select experience</option><option>No experience / Student</option><option>Less than 1 year</option><option>1–2 years</option><option>3–5 years</option><option>6–10 years</option><option>More than 10 years</option></select></div>
+<div><label for="email">Email (optional)</label><input id="email" type="email" placeholder="name@example.com"></div>
+<div><label for="phone">Mobile Number (optional)</label><input id="phone" type="tel" placeholder="Enter mobile number"></div>
+<div><label for="candidateid">Candidate ID (optional)</label><input id="candidateid" placeholder="If provided by your institution"></div>
+</div>
+<div class="notice" style="margin-top:18px"><strong>Practice examination details</strong><br>Date reference: 28 October 2026 · Scheduled time reference: 10:00 AM<br>Model paper: 54 MCQs · 100 marks · 1-, 2- and 3-mark questions.<br>Please follow the examination instructions provided by your institution.</div>
+<div class="actions"><button id="start">Continue to Instructions</button></div>
+</section>
+<section class="card" id="instructions" style="display:none">
+<h2>Examination Instructions</h2>
+<ol>
+<li>Malpractice may result in disqualification or termination and may be recorded.</li>
+<li>Do not open or switch to another browser window or tab during an actual proctored exam; follow the official exam rules.</li>
+<li>Submit within the time allowed. Late submissions may not be considered.</li>
+<li>Select one answer for each question. Unselected questions are treated as not attempted.</li>
+<li>The original notice states that each incorrect answer may lose 0.5 marks. This practice page scores correct answers only and does not apply negative marking.</li>
+</ol>
+<p class="sub">Answer all questions and select Submit when you have finished.</p>
+<div class="actions"><button id="begin">Start Practice Test</button><button class="secondary" id="back">Back to Details</button></div>
+</section>
+<section class="card" id="exam">
+<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><div><h2>Multiple-Choice Examination</h2><div id="candidateLine" class="sub"></div></div><div><strong id="progress">0 / 54 answered</strong><br><span class="sub">Maximum: 100 marks</span></div></div>
+<div id="questions"></div>
+<div class="actions"><button id="submit">Submit Answers</button><button class="secondary" id="clear">Clear All Answers</button></div>
+</section>
+<section class="card" id="result">
+<h2>Examination Submission</h2>
+<div style="text-align:center;padding:28px 10px">
+<div style="font-size:48px;color:#176b45;margin-bottom:12px">✓</div>
+<h2 style="color:#176b45">Your exam has been submitted successfully.</h2>
+<p>Thank you for completing the examination.</p>
+</div>
+</section>
+</main><footer>Please follow the official instructions provided by your institution.</footer>
+<script>
+const Q=[
+[1,"Medical-Surgical Nursing","Normal resting respiratory rate of a healthy adult?",["6–10/min","12–20/min","22–30/min","30–40/min"],1],
+[1,"Medical-Surgical Nursing","Which vitamin deficiency causes scurvy?",["Vitamin A","Vitamin B12","Vitamin C","Vitamin K"],2],
+[1,"Medical-Surgical Nursing","Which test reflects average blood glucose over about 2–3 months?",["HbA1c","Serum sodium","Bleeding time","Bilirubin"],0],
+[1,"Medical-Surgical Nursing","Which organism causes tuberculosis?",["Staphylococcus aureus","Mycobacterium tuberculosis","Plasmodium vivax","Vibrio cholerae"],1],
+[1,"Medical-Surgical Nursing","Which electrolyte abnormality can cause cardiac rhythm disturbances?",["Potassium","Fluoride","Iron","Iodine"],0],
+[1,"Medical-Surgical Nursing","Which position often helps a patient with severe breathlessness?",["High Fowler's","Flat prone","Trendelenburg","Lithotomy"],0],
+[1,"Midwifery Nursing","Which hormone stimulates uterine contractions during labour?",["Prolactin","Oxytocin","Insulin","Thyroxine"],1],
+[1,"Midwifery Nursing","A term pregnancy lasts approximately how many weeks?",["28","32","40","44"],2],
+[1,"Midwifery Nursing","Which vitamin is recommended early in pregnancy to reduce neural tube defects?",["Vitamin E","Folic acid","Vitamin K","Vitamin D only"],1],
+[1,"Midwifery Nursing","The first stage of labour ends with:",["Delivery of placenta","Full cervical dilatation","Birth of baby","Onset of contractions"],1],
+[1,"Child Health Nursing","Which vaccine is commonly given at birth under India's national immunization schedule?",["BCG","DPT booster","MR second dose","HPV vaccine"],0],
+[1,"Child Health Nursing","Which can be a sign of dehydration in a child?",["Increased tears","Sunken eyes","Excessive urination","Moist mouth always"],1],
+[1,"Community Health Nursing","What does IMR stand for?",["Infant Mortality Rate","Immediate Medical Response","Internal Morbidity Record","Immunization Monitoring Ratio"],0],
+[1,"Community Health Nursing","Which method sterilizes heat-resistant surgical instruments?",["Autoclaving","Ordinary rinsing","Sun drying","Cold water washing"],0],
+[1,"Mental Health Nursing","Which symptom is commonly associated with depression?",["Persistent low mood","Increased height","Jaundice in every case","Improved hearing"],0],
+[1,"Mental Health Nursing","Which technique encourages a patient to express feelings?",["False reassurance","Active listening","Changing the subject","Arguing"],1],
+[1,"Nursing Education","Which method is suitable for teaching a clinical procedure?",["Demonstration","Silent reading only","Attendance register","Unstructured discussion"],0],
+[1,"Nursing Research","Which approach primarily uses numerical data?",["Quantitative","Qualitative only","Narrative only","Ethnographic only"],0],
+[1,"Nursing Administration","Delegation involves:",["Assigning appropriate tasks and authority while retaining required accountability","Avoiding all responsibility","Transferring every duty permanently","Allowing untrained staff to do any procedure"],0],
+[1,"Fundamentals of Nursing","Which routine measure best prevents healthcare-associated infection?",["Hand hygiene","Wearing two watches","Always closing windows","Antibiotics for everyone"],0],
+[1,"Fundamentals of Nursing","Which instrument measures blood pressure?",["Sphygmomanometer","Otoscope","Spirometer","Ophthalmoscope"],0],
+[2,"Medical-Surgical Nursing","A conscious patient able to swallow has symptoms of hypoglycaemia. What is an appropriate initial action?",["Give fast-acting oral glucose according to protocol","Give a large insulin dose","Withhold all treatment","Encourage vigorous exercise"],0],
+[2,"Medical-Surgical Nursing","Which pair is commonly associated with left-sided heart failure?",["Breathlessness and pulmonary crackles","Jaundice and ear pain","Constipation and rash","Joint deformity and hair loss"],0],
+[2,"Medical-Surgical Nursing","Which two assessments are important with opioid analgesics?",["Respiratory rate and level of consciousness","Hair colour and height","Visual acuity and shoe size","Appetite and handwriting only"],0],
+[2,"Medical-Surgical Nursing","Which pair can occur in iron-deficiency anaemia?",["Fatigue and pallor","Jaundice and polyuria in every case","Bradycardia and weight gain only","Hearing loss and rash"],0],
+[2,"Midwifery Nursing","Which pair of pregnancy danger signs requires urgent assessment?",["Severe headache and vaginal bleeding","Mild hunger and thirst","Normal fetal movement and appetite","Harmless hiccups only"],0],
+[2,"Midwifery Nursing","Which two components are included in Apgar assessment?",["Heart rate and respiratory effort","Weight and head circumference","Blood group and haemoglobin","Temperature and length"],0],
+[2,"Midwifery Nursing","Which findings may indicate postpartum haemorrhage?",["Excessive vaginal bleeding and circulatory compromise","Normal lochia and stable vital signs","Normal appetite and sleep","Mild thirst alone"],0],
+[2,"Child Health Nursing","Which pair suggests respiratory distress in an infant?",["Chest retractions and nasal flaring","Normal breathing and pink lips","Normal feeding and quiet sleep","Steady growth and alertness"],0],
+[2,"Child Health Nursing","Which measures are important in childhood diarrhoea?",["Oral rehydration solution and continued feeding","Stop all fluids and food","Antibiotics for every case","Restrict breastfeeding"],0],
+[2,"Community Health Nursing","What are two purposes of epidemiological surveillance?",["Detect disease trends and identify outbreaks","Replace clinical assessment","Guarantee zero infections","Remove the need for vaccination"],0],
+[2,"Community Health Nursing","Which pair represents key primary healthcare principles?",["Community participation and equitable access","Hospital admission for every illness","Specialist treatment only","Private insurance alone"],0],
+[2,"Mental Health Nursing","Which is an appropriate response to an anxious patient?",["Listen calmly and encourage expression of feelings","Dismiss concerns and leave","Threaten the patient","Argue about their feelings"],0],
+[2,"Mental Health Nursing","Which pair is commonly associated with mania?",["Decreased need for sleep and increased activity","Slowing and excessive sleep only","Loss of vision and hearing","Fever and jaundice"],0],
+[2,"Nursing Research","What is the difference between independent and dependent variables?",["Independent: presumed influencing variable; dependent: measured outcome","Independent: outcome; dependent: consent form","Both always mean sample size","Both are necessarily confounders"],0],
+[2,"Nursing Research","Which are ethical requirements in human-subject research?",["Informed consent and confidentiality","Coercion and identity disclosure","Fabrication and plagiarism","Withholding all information without justification"],0],
+[2,"Nursing Education","Which methods evaluate clinical nursing skills?",["Direct observation and skills checklist","Attendance and guesswork only","Posters and room inspection","Patient age and uniform colour"],0],
+[2,"Nursing Administration","Which are functions of a nurse manager?",["Staff allocation and supervision of care","Prescribe every drug regardless of scope","Ignore safety incidents","Avoid communication"],0],
+[2,"Fundamentals of Nursing","Which measures help prevent pressure injuries?",["Regular repositioning and skin assessment","Vigorous massage of reddened areas","Restrict fluids for all patients","Keep the patient in one position"],0],
+[2,"Fundamentals of Nursing","Which checks are important before medication administration?",["Correct patient and correct medication","Room colour and visitor count","Shoe size and meal preference","Bed number alone"],0],
+[2,"Pharmacology","Which checks are important before administering insulin?",["Verify prescribed dose and check blood glucose as indicated","Ignore meal timing and use any dose","Reuse one syringe for multiple patients","Skip prescription checks"],0],
+[3,"Medical-Surgical Nursing","A patient develops sudden chest pain, sweating and breathlessness. What is the best response?",["Activate emergency assessment, assess ABCs and obtain urgent ECG and vital signs as appropriate","Ask the patient to walk","Delay assessment until next round","Give food and discharge"],0],
+[3,"Medical-Surgical Nursing","A patient with diabetes has an infected foot ulcer. Which plan is most appropriate?",["Assess wound and circulation, monitor glucose, provide prescribed wound care and escalate infection signs","Apply unprescribed chemicals","Encourage barefoot walking","Delay review until pain stops"],0],
+[3,"Midwifery Nursing","A pregnant woman has BP 170/110 mmHg, severe headache and blurred vision. What is the priority?",["Urgent obstetric assessment for possible severe pre-eclampsia","Routine appointment in two weeks","Strenuous exercise","Send home without assessment"],0],
+[3,"Midwifery Nursing","A woman has heavy bleeding immediately after birth. What should the nurse do?",["Call emergency help, assess ABCs and uterine tone, and initiate the haemorrhage protocol","Wait for bleeding to stop","Encourage walking","Delay vital signs"],0],
+[3,"Child Health Nursing","A child has severe dehydration due to diarrhoea. What is the priority?",["Urgent assessment and rehydration according to severity and protocol","Withhold fluids for 24 hours","Give routine antidiarrhoeals without assessment","Stop breastfeeding"],0],
+[3,"Child Health Nursing","A child has fever, cough, chest indrawing and difficulty breathing. What should the nurse do?",["Arrange urgent assessment, assess oxygenation and support breathing per protocol","Review after one week","Give cough syrup only","Encourage running"],0],
+[3,"Community Health Nursing","Several village residents develop acute watery diarrhoea. What is the best public-health response?",["Notify health authorities, investigate, promote safe water and initiate case management","Keep cases secret","Stop water without alternatives","Wait until outbreak ends"],0],
+[3,"Community Health Nursing","A nurse plans a programme to reduce hypertension. Which approach is best?",["Assess community needs, provide practical lifestyle education and evaluate outcomes","Give the same lecture without evaluation","Focus only on admissions","Discourage screening"],0],
+[3,"Mental Health Nursing","A patient says they intend to harm themselves and describes a specific plan. What is the priority?",["Assess immediate risk, ensure safety, stay with patient and arrange urgent support","Promise secrecy and leave","Dismiss it as attention-seeking","Wait for routine appointment"],0],
+[3,"Mental Health Nursing","A frightened patient reports hallucinations. Which response is appropriate?",["Communicate calmly, acknowledge distress without reinforcing hallucinations, and assess safety","Argue aggressively","Encourage obedience to voices","Leave without assessing risk"],0],
+[3,"Nursing Research","A researcher compares two teaching methods using examination scores. Which approach is suitable?",["Compare the groups using measured scores","Write a case report without outcomes","Conduct an unrelated experiment","Collect opinions without defining methods"],0],
+[3,"Nursing Research","A study reports p < 0.05. What does this usually mean?",["The result meets a conventional statistical-significance threshold; importance and study quality still need assessment","The treatment works for everyone","There is a 95% probability the hypothesis is true","There can be no bias"],0],
+[3,"Nursing Administration","A medication error occurs on a ward. What should the nurse in charge prioritise?",["Assess and protect the patient, notify the appropriate clinician, report per policy and support review","Alter records to hide the error","Blame staff before assessment","Avoid reporting"],0],
+[3,"Nursing Education","Students can explain a procedure but cannot perform it safely. Which teaching strategy is best?",["Demonstration, supervised return demonstration and competency assessment","Written lecture only","Award competency for attendance","Allow unsupervised practice on patients"],0],
+[3,"Fundamentals of Nursing","An adult is unresponsive and not breathing normally. What should the nurse do?",["Activate emergency response, obtain an AED and begin CPR according to training and protocol","Give oral fluids","Wait five minutes","Place the patient in a chair and leave"],0]
+];
+const $=id=>document.getElementById(id);
+function show(id){$(id).style.display="block"}
+function hide(id){$(id).style.display="none"}
+function render(){
+  const root=$("questions");root.innerHTML="";
+  Q.forEach((q,i)=>{
+    const d=document.createElement("div");d.className="q";d.id="q"+i;
+    d.innerHTML=`<span class="marks">${q[0]} ${q[0]===1?"mark":"marks"}</span><div class="sub">${i+1}. ${q[1]}</div><div class="qtitle">${q[2]}</div>`+
+    q[3].map((o,j)=>`<label class="option" id="opt-${i}-${j}"><input type="radio" name="ans${i}" value="${j}"><span>${String.fromCharCode(65+j)}. ${o}</span></label>`).join("");
+    root.appendChild(d);
+  });
+  root.addEventListener("change",updateProgress);
+}
+function updateProgress(){let n=Q.filter((q,i)=>document.querySelector(`input[name="ans${i}"]:checked`)).length;$("progress").textContent=`${n} / ${Q.length} answered`;}
+$("start").onclick=()=>{
+ if(!$("name").value.trim()||!$("course").value||!$("experience").value){alert("Please enter your name, select your course and nursing experience.");return;}
+ hide("registration");show("instructions");
+};
+$("back").onclick=()=>{hide("instructions");show("registration")};
+$("begin").onclick=()=>{
+ $("candidateLine").textContent=`Candidate: ${$("name").value.trim()} · Course: ${$("course").value} · Experience: ${$("experience").value}`;
+ hide("instructions");show("exam");render();window.scrollTo(0,0);
+};
+$("clear").onclick=()=>{if(confirm("Clear all selected answers?")){document.querySelectorAll('#questions input[type=radio]').forEach(x=>x.checked=false);document.querySelectorAll('.option').forEach(x=>x.classList.remove('correct','wrong'));updateProgress();}};
+$("submit").onclick=()=>{
+ if(!confirm("Are you sure you want to submit your examination?"))return;
+ hide("exam");show("result");window.scrollTo(0,0);
+};
+
+</script>
+</body></html>
